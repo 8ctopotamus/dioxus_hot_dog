@@ -4,12 +4,15 @@ fn main() {
   dioxus::launch(App)
 }
 
+static CSS: Asset = asset!("/assets/main.css");
+
 #[component]
 fn App() -> Element {
   	
 	let breed = use_signal(|| "pitbull".to_string());
   
   rsx! {
+		document::Stylesheet { href: CSS }
 		div { id: "title",
 			h1 { "🌭 HotDog " }
 		}
