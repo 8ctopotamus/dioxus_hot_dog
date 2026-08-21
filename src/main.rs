@@ -7,24 +7,40 @@ fn main() {
 static CSS: Asset = asset!("/assets/main.css");
 
 #[component]
-fn App() -> Element {
-  	
-	let breed = use_signal(|| "pitbull".to_string());
-  
+fn App() -> Element {	
   rsx! {
 		document::Stylesheet { href: CSS }
+		Title {}
+		DogView {}
+	}
+}
+
+#[component]
+fn Title() -> Element {
+	rsx! {
 		div { id: "title",
 			h1 { "🌭 HotDog " }
 		}
+	}
+}
+
+#[component]
+fn DogView() -> Element {
+	let image_src = use_hook(|| "https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg");
+
+	let skip = move |evt| {};
+	let save = move |evt| {};
+
+	rsx! {
 		div { id: "dogview",
 			img {
-				src: "https://images.dog.ceo/breeds/{breed}/dog-3981540_1280.jpg",
-				alt: breed,
+				src: "{image_src}",
+				// alt: breed,
 			}
 		}
 		div { id: "buttons",
-			button { id: "skip", "skip" }
-			button { id: "save", "save!" }
+			button { onclick: skip, id: "skip", "skip" }
+			button { onclick: save, id: "save", "save!" }
 		}
 	}
 }
