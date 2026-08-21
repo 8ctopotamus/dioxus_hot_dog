@@ -1,11 +1,5 @@
 use dioxus::prelude::*;
 
-mod components;
-
-use components::header::Header;
-use components::footer::Footer;
-use components::dog_app::DogApp;
-
 fn main() {
   dioxus::launch(App)
 }
@@ -13,11 +7,21 @@ fn main() {
 #[component]
 fn App() -> Element {
   	
-	let dog_name = use_signal(|| "Black Lab".to_string());
+	let breed = use_signal(|| "pitbull".to_string());
   
   rsx! {
-		Header {}
-		DogApp { breed: dog_name }
-		Footer {}
-  }
+		div { id: "title",
+			h1 { "🌭 HotDog " }
+		}
+		div { id: "dogview",
+			img {
+				src: "https://images.dog.ceo/breeds/{breed}/dog-3981540_1280.jpg",
+				alt: breed,
+			}
+		}
+		div { id: "buttons",
+			button { id: "skip", "skip" }
+			button { id: "save", "save!" }
+		}
+	}
 }
