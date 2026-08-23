@@ -1,4 +1,6 @@
 use dioxus::prelude::*;
+use serde::Deserialize;
+use reqwest;
 
 fn main() {
   dioxus::launch(App)
@@ -24,12 +26,25 @@ fn Title() -> Element {
 	}
 }
 
+
+#[derive(Deserialize)]
+struct DogApiResponse {
+	message: String
+}
+
 #[component]
 fn DogView() -> Element {
-	let image_src = use_hook(|| "https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg");
+	let image_src = use_signal(|| "".to_string());
 
-	let skip = move |evt| {};
-	let save = move |evt| {};
+	// let skip = move |evt| {};
+	let save = move |_| async move {
+		let response = reqwest::get()
+			.await
+			.unwrap()
+			.json::<DogApiResponse>()
+			.await
+		image_src.set(response.unwrap().message);
+	};
 
 	rsx! {
 		div { id: "dogview",
@@ -39,7 +54,7 @@ fn DogView() -> Element {
 			}
 		}
 		div { id: "buttons",
-			button { onclick: skip, id: "skip", "skip" }
+			// button { onclick: skip, id: "skip", "skip" }
 			button { onclick: save, id: "save", "save!" }
 		}
 	}
