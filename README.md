@@ -14,3 +14,7 @@ To run for a different platform, use the `--platform platform` flag. E.g.
 ```bash
 dx serve --platform desktop
 ```
+
+## Resources
+
+* https://github.com/dxps/dioxus_playground/tree/main/dioxus_07_hotdog

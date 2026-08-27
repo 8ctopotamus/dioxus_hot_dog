@@ -17,7 +17,20 @@ thread_local! {
 }
 
 #[server]
-async fn save_dog(image: String) -> Result<()> {
+pub async fn save_dog(image: String) -> Result<()> {
 	DB.with(|f| f.execute("INSERT INTO dogs (url) VALUES (?1)", &[&image]))?;
 	Ok(())
+}
+
+#[server]
+pub async fn list_dogs() -> Result<Vec<(usize, String)>, ServerFnError> {
+	let dogs = DB.with(|f| {
+		f.prepare("SELECT id, url FROM dogs ORDER BY id DESC LIMIT 10")
+			.unwrap()
+			.query_map([], |row| OK((row.get(0)?, row.get(1)?)))
+			.unwrap()
+			.map(|r| r.unwrap())
+			.collect()
+	})
+	Ok(dogs)
 }
