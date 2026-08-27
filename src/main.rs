@@ -2,11 +2,27 @@ use dioxus::prelude::*;
 use serde::Deserialize;
 use reqwest;
 
+static CSS: Asset = asset!("/assets/main.css");
+
 fn main() {
   dioxus::launch(App)
 }
 
-static CSS: Asset = asset!("/assets/main.css");
+#[post("/api/save_dog")]
+async fn save_dog(image: String) -> Result<()> {
+	use std::io::Write;
+
+	let mut file = std::fs::OpenOptions::new()
+		.write(true)
+		.append(true)
+		.create(true)
+		.open("dogs.txt")
+		.unwrap();
+
+	file.write_fmt(format_args!("{image}\n"));
+
+	Ok(())
+}
 
 #[component]
 fn App() -> Element {	
@@ -51,8 +67,20 @@ fn DogView() -> Element {
 			}
 		}
 		div { id: "buttons",
-			button { onclick: move |_| img_src.restart(), id: "skip", "skip" }
-			button { onclick: move |_| img_src.restart(), id: "save", "save!" }
+			button { 
+				id: "skip",
+				onclick: move |_| img_src.restart(), 
+				"skip" 
+			}
+			button { 
+				id: "save", 
+				onclick: move |_| async move {
+					let current = img_src.cloned().unwrap();
+					img_src.restart();
+					let _ = save_dog(current).await;
+				},
+				"save!" 
+			}
 		}
 	}
 }
