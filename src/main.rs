@@ -33,26 +33,26 @@ struct DogApiResponse {
 
 #[component]
 fn DogView() -> Element {
-	let mut image_src = use_signal(|| );
-
-	let save = move |_| async move {
-		let response = reqwest::get("https://dog.ceo/api/breeds/image/random")
+	let mut img_src = use_resource(|| async move {
+		reqwest::get("https://dog.ceo/api/breeds/image/random")
 			.await
 			.unwrap()
 			.json::<DogApiResponse>()
-			.await;
-		image_src.set(response.unwrap().message);
-	};
+			.await
+			.unwrap()
+			.message
+	});
 
 	rsx! {
 		div { id: "dogview",
 			img {
-				src: "{image_src}",
+				src: img_src.cloned().unwrap_or_default(),
 				// alt: TODO
 			}
 		}
 		div { id: "buttons",
-			button { onclick: save, id: "save", "save!" }
+			button { onclick: move |_| img_src.restart(), id: "skip", "skip" }
+			button { onclick: move |_| img_src.restart(), id: "save", "save!" }
 		}
 	}
 }
