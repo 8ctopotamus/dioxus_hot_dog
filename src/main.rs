@@ -26,7 +26,6 @@ fn Title() -> Element {
 	}
 }
 
-
 #[derive(Deserialize)]
 struct DogApiResponse {
 	message: String
@@ -34,15 +33,14 @@ struct DogApiResponse {
 
 #[component]
 fn DogView() -> Element {
-	let image_src = use_signal(|| "".to_string());
+	let mut image_src = use_signal(|| );
 
-	// let skip = move |evt| {};
 	let save = move |_| async move {
-		let response = reqwest::get()
+		let response = reqwest::get("https://dog.ceo/api/breeds/image/random")
 			.await
 			.unwrap()
 			.json::<DogApiResponse>()
-			.await
+			.await;
 		image_src.set(response.unwrap().message);
 	};
 
@@ -50,11 +48,10 @@ fn DogView() -> Element {
 		div { id: "dogview",
 			img {
 				src: "{image_src}",
-				// alt: breed,
+				// alt: TODO
 			}
 		}
 		div { id: "buttons",
-			// button { onclick: skip, id: "skip", "skip" }
 			button { onclick: save, id: "save", "save!" }
 		}
 	}
