@@ -1,8 +1,10 @@
 use dioxus::prelude::*;
-use serde::Deserialize;
-use reqwest;
+// use serde::Deserialize;
+// use reqwest;
 
-#[derive(Deserialize)]
+use crate::{backend::save_dog};
+
+#[derive(serde::Deserialize)]
 struct DogApiResponse {
 	message: String
 }

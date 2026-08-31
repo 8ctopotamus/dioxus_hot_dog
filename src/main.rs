@@ -5,8 +5,6 @@ mod components;
 
 use crate::components::*;
 
-static CSS: Asset = asset!("/assets/main.css");
-
 #[derive(Routable, Clone, PartialEq)]
 enum Route {
 	#[layout(NavBar)]
@@ -16,6 +14,7 @@ enum Route {
 	#[route("/favorites")]
 	Favorites,
 	
+	// segments catch-all example
 	// #[route("/:...segements")]
 	// PageNotFound { segments: Vec<String> },
 }
@@ -23,7 +22,7 @@ enum Route {
 #[component]
 fn App() -> Element {	
   rsx! {
-		document::Stylesheet { href: CSS }
+		document::Stylesheet { href: asset!("/assets/main.css") }
 		Router::<Route> {}
 	}
 }

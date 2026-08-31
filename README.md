@@ -17,4 +17,5 @@ dx serve --platform desktop
 
 ## Resources
 
+* https://github.com/DioxusLabs/dioxus/tree/main/examples/01-app-demos/hotdog
 * https://github.com/dxps/dioxus_playground/tree/main/dioxus_07_hotdog
