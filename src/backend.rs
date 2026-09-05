@@ -34,3 +34,10 @@ pub async fn save_dog(image: String) -> Result<()> {
 	DB.with(|f| f.execute("INSERT INTO dogs (url) VALUES (?1)", &[&image]))?;
 	Ok(())
 }
+
+#[server]
+pub async fn delete_dog(id: usize) -> Result<()> {
+	println!("ID: {}",id);
+	DB.with(|f| f.execute("DELETE FROM dogs WHERE id = ?", (id, )))?;
+	Ok(())
+}

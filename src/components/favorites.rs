@@ -14,7 +14,14 @@ pub fn Favorites() -> Element {
           div {
             key: "{id}",
             class: "favorite-dog",
-            img { src: "{url}" }
+            img { src: "{url}" },
+            button { 
+              onclick: move |_| async move {
+                backend::delete_dog(id).await;
+                favorites.restart();
+              },
+              "×"
+            }
           }
         }
       }

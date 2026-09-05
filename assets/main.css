@@ -147,4 +147,16 @@ a#heart {
     bottom: 10px;
     left: 10px;
     z-index: 10;
+    background-color: red;
+    color: white;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
 }
+
+.favorite-dog button:hover {
+    background-color: rgb(182, 0, 0);
+}
+
